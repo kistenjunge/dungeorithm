@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import kistenjunge.org.dungeorithm.Dungeorithm;
 import kistenjunge.org.dungeorithm.painters.DungeonPainter;
+import kistenjunge.org.dungeorithm.painters.impl.SwingDungeonPainter;
 import kistenjunge.org.dungeorithm.painters.impl.TextualDungeonPainter;
 import kistenjunge.org.dungeorithm.util.Coordinate;
 import kistenjunge.org.dungeorithm.util.TileType;
@@ -22,6 +23,9 @@ public class App
 
     DungeonPainter dungeonPainter = new TextualDungeonPainter();
     dungeonPainter.drawDungeon(dungeon);
+    
+    DungeonPainter swingDungeonPainter = new SwingDungeonPainter();
+    swingDungeonPainter.drawDungeon(dungeon);
   }
 
 }
