@@ -1,12 +1,13 @@
 package kistenjunge.org.dungeorithm.painters.impl;
 
-import java.awt.Color;
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.HashMap;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import kistenjunge.org.dungeorithm.painters.DungeonPainter;
 import kistenjunge.org.dungeorithm.util.Coordinate;
@@ -15,15 +16,21 @@ import kistenjunge.org.dungeorithm.util.TileType;
 public class SwingDungeonPainter implements DungeonPainter {
 	private static final String FRAME_IDENTIFIER = "Dungeorithm";
 	private JFrame frame;
+	private static JPanel menuPanel;
+	private JPanel dungeonPanel;
 
 	@Override
 	public void drawDungeon(HashMap<Coordinate, TileType> dungeon) {
 		Dimension dungeonDimension = getDimension(dungeon);
 		int dungeonRowCount = (int) dungeonDimension.getHeight() + 1;
 		int dungeonColCount = (int) dungeonDimension.getWidth() + 1;
-		
+
 		frame = new JFrame(FRAME_IDENTIFIER);
-		frame.setLayout(new GridLayout(dungeonRowCount, dungeonColCount));
+		frame.setLayout(new BorderLayout());
+
+		dungeonPanel = new JPanel();
+		dungeonPanel
+				.setLayout(new GridLayout(dungeonRowCount, dungeonColCount));
 
 		int y = 0;
 		int x = 0;
@@ -32,13 +39,18 @@ public class SwingDungeonPainter implements DungeonPainter {
 		while (dungeon.containsKey(key)) {
 			do {
 				TileType tileType = dungeon.get(key);
-				JLabel tileLabel = tileTypeToJLabel(tileType);
-				frame.add(tileLabel);
+				JLabel tileLabel = new SwingDungeonTileTypeLabel(tileType, key);
+				dungeonPanel.add(tileLabel);
 				key = new Coordinate(++x, y);
 			} while (dungeon.containsKey(key));
 			x = 0;
 			key = new Coordinate(x, ++y);
 		}
+
+		menuPanel = new SwingDungeonMenuPanel();
+
+		frame.add(menuPanel, BorderLayout.NORTH);
+		frame.add(dungeonPanel, BorderLayout.CENTER);
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
@@ -70,30 +82,13 @@ public class SwingDungeonPainter implements DungeonPainter {
 		}
 
 		System.out.println("Dimension of Dungeon :" + maxX + "x" + maxY);
-		return new Dimension(maxX+1, maxY);
+		return new Dimension(maxX + 1, maxY);
 	}
 
-	 private JLabel tileTypeToJLabel(TileType tileType) {
-	 JLabel tileLabel = new JLabel();
-	 tileLabel.setSize(10, 10);
-	 tileLabel.setOpaque(true);
-	
-	 switch (tileType) {
-	 case EMPTY:
-	 tileLabel.setBackground(Color.BLACK);
-	 break;
-	 case ROOM:
-	 tileLabel.setBackground(Color.BLACK);
-	 break;
-	 case PERIMETER:
-	 tileLabel.setText("x");
-	 tileLabel.setBackground(Color.WHITE);
-	 break;
-	
-	 default:
-	 tileLabel.setBackground(Color.RED);
-	 break;
-	 }
-	 return tileLabel;
-	 }
+	protected static SwingDungeonMenuPanel getSwingDungeonMenuPanel() {
+		if (menuPanel == null) {
+			menuPanel = new SwingDungeonMenuPanel();
+		}
+		return (SwingDungeonMenuPanel) menuPanel;
+	}
 }
