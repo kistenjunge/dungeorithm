@@ -1,47 +1,45 @@
 package kistenjunge.org.dungeorithm;
 
-import java.util.HashMap;
-
+import kistenjunge.org.dungeorithm.objects.Dungeon;
 import kistenjunge.org.dungeorithm.services.DungeonService;
 import kistenjunge.org.dungeorithm.util.CalcUtils;
-import kistenjunge.org.dungeorithm.util.Coordinate;
-import kistenjunge.org.dungeorithm.util.TileType;
 
-public class Dungeorithm
-{
-  HashMap<Coordinate,TileType> dungeon;
+public class Dungeorithm {
+	int maxLength = 30;
 
-  int maxLength = 30;
+	int minLength = 15;
 
-  int minLength = 15;
+	Dungeon dungeon;
 
-  public Dungeorithm(int minLength, int maxLength)
-  {
-    this.maxLength = maxLength;
-    this.minLength = minLength;
-  }
+	public Dungeorithm(int minLength, int maxLength) {
+		this.maxLength = maxLength;
+		this.minLength = minLength;
+	}
 
-  public void generateDungeon()
-  {
-    int dungeonSize = CalcUtils.randomOddNumber(minLength, maxLength);
-    DungeonService dungeonService = new DungeonService(dungeonSize);
-    dungeonService.fillDungeonWithRooms();
-    dungeon = dungeonService.getLayout();
-  }
+	public void generateDungeon() {
+		int dungeonSize = CalcUtils.randomOddNumber(minLength, maxLength);
 
-  public void setMaxLength(int maxLength)
-  {
-    this.maxLength = maxLength;
-  }
+		DungeonService dungeonService = new DungeonService(dungeonSize);
+		dungeonService.fillDungeonWithRooms();
 
-  public void setMinLength(int minLength)
-  {
-    this.minLength = minLength;
-  }
+		dungeon = new Dungeon(dungeonSize, dungeonSize);
+		dungeon.setDungeonLayout(dungeonService.getLayout());
+		dungeon.setDungeonService(dungeonService);
+	}
 
-  public HashMap<Coordinate, TileType> getDungeon()
-  {
-    return dungeon;
-  }
+	public void setMaxLength(int maxLength) {
+		this.maxLength = maxLength;
+	}
 
+	public void setMinLength(int minLength) {
+		this.minLength = minLength;
+	}
+
+	public Dungeon getDungeon() {
+		return dungeon;
+	}
+
+	public void setDungeon(Dungeon dungeon) {
+		this.dungeon = dungeon;
+	}
 }

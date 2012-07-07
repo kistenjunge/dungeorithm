@@ -12,6 +12,7 @@ import kistenjunge.org.dungeorithm.util.TileType;
  */
 public class Room extends DungeonObject
 {
+	//Should be replaced with Layout class/interface
   HashMap<Coordinate, TileType> layout;
 
   int width;

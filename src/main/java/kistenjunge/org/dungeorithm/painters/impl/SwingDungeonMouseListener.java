@@ -44,6 +44,9 @@ public class SwingDungeonMouseListener implements MouseListener {
 				SwingDungeonPainter.getSwingDungeonMenuPanel().setText(
 						tileTypeName + " (" + tileXCoordinate + ":"
 								+ tileYCoordinate + ")");
+			} else if (component instanceof SwingDungeonReloadButton) {
+				System.out
+						.println("SwingDungeonMouseListener : SwingDungeonReloadButton pressed: TODO");
 			}
 		} else {
 			SwingDungeonPainter.getSwingDungeonMenuPanel().setText(
